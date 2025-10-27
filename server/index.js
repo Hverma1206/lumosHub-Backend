@@ -54,14 +54,12 @@ app.use("/api/code", codeRoutes);
 app.use("/api/auth", authRoutes);
 
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
-
 io.on("connection", (socket) => {
   editorSocket(socket, io);
 });
