@@ -12,4 +12,4 @@ jobs:
       - name: Ping Render app
         run: |
           echo "Pinging Render..."
-          curl -s -o /dev/null -w "%{http_code}\n" https://lumoshub-backend.onrender.com/
+          curl -s -o /dev/null -w "%{http_code}\n" https://lumoshub-backend.onrender.com/ping
