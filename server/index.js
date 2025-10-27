@@ -19,8 +19,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("MongoDB connected");
-
-    // Clean up old indexes
     try {
       const collection = mongoose.connection.collection("users");
       const indexes = await collection.getIndexes();
@@ -66,6 +64,11 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   editorSocket(socket, io);
+});
+app.get("/ping", (req, res) => {
+  const ts = new Date().toISOString();
+  console.log(`[PING] at ${ts} from ${req.ip}`);
+  res.status(200).json({ message: "pong", ip: req.ip });
 });
 
 server.listen(PORT, () => {
