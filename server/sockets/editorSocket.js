@@ -109,6 +109,26 @@ export default (socket, io) => {
     io.to(targetSocketId).emit("code-update", code);
   });
 
+  socket.on("execute-code", ({ roomId, language, version, code, output, stderr }) => {
+    if (!roomExists(roomId)) return;
+    
+    io.to(roomId).emit("code-executed", {
+      executedBy: socket.id,
+      language,
+      output,
+      stderr
+    });
+  });
+
+  socket.on("language-change", ({ roomId, language }) => {
+    if (!roomExists(roomId)) return;
+    
+    const room = getRoom(roomId);
+    room.language = language;
+    
+    socket.to(roomId).emit("language-updated", { language });
+  });
+
   socket.on("disconnect", () => {
     console.log(" Client disconnected:", socket.id);
     
